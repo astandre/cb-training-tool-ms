@@ -10,16 +10,9 @@ db = client["interactions_db"]
 interactions = db["interactions"]
 
 
-def get_all_inputs():
-    inter = interactions.find()
-    # print(inter)
-    for aux in inter:
-        print(aux)
-
-
 def update_entry(entry_id):
     """
-    This method updates the output of the current conversation thread.
+    This method updates the classified status of an interaction
 
      Parameters:
 
@@ -28,19 +21,24 @@ def update_entry(entry_id):
     """
 
     # "context": {"classified": False}
-    updated_entry = interactions.update({'_id': ObjectId(entry_id)})
+    updated_entry = interactions.find({'_id': ObjectId(entry_id)})
     print(updated_entry["output"]["context"])
-    context = updated_entry["output"]["context"]["classified"] = True
-    interactions.update({'_id': ObjectId(entry_id)}, {'$set': {"output": context}})
+    aux_output = updated_entry["output"]
+    output = aux_output["context"]["classified"] = True
+    interactions.update({'_id': ObjectId(entry_id)}, {'$set': {"output": output}})
 
 
 def get_interactions(agent):
+    """
+    This method retrieves all of unclassified user-agent interactions
+
+    :param agent: A valid agent name.
+
+    :return: a list of all interactions
+    """
     result = interactions.find({"agent": agent, "output.context.classified": False})
-    # result = interactions.find({"agent": agent})
     final_res = []
     for res in result:
-        # print(res)
-        # if res["output"]["context"]["classified"] is False:
         aux_res = {
             "id": str(res["_id"]),
             "agent": res["agent"],
@@ -48,6 +46,3 @@ def get_interactions(agent):
         }
         final_res.append(aux_res)
     return final_res
-
-# print(get_interactions("OpenCampus"))
-# get_all_inputs()
