@@ -38,6 +38,7 @@ def get_interactions(agent):
     result = interactions.find({"agent": agent, "context": {"classified": False}})
     final_res = []
     # TODO get 10 sentences
+    print(len(result))
     for res in result:
         # print(res)
         aux_res = {

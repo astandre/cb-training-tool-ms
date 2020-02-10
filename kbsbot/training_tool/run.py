@@ -8,7 +8,7 @@ import signal
 def main():
     app = create_app()
     host = app.config.get('host', '0.0.0.0')
-    port = app.config.get('port', 5007)
+    port = app.config.get('port', 5000)
     debug = app.config.get('DEBUG', False)
 
     db.init_app(app)
