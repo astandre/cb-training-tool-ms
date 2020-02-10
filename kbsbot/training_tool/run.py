@@ -1,8 +1,7 @@
 from kbsbot.training_tool.app import create_app
 from kbsbot.training_tool.database import *
 from kbsbot.training_tool.database_utils import init_database
-import sys
-import signal
+import os
 
 
 def main():
@@ -24,7 +23,7 @@ if __name__ == "__main__":
 else:
     _HERE = os.path.dirname(__file__)
     _SETTINGS = os.path.join(_HERE, 'settings.ini')
-    print("")
+    print("buon viaggio")
     app = create_app(settings=_SETTINGS)
     db.init_app(app)
     db.app = app
