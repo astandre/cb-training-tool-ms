@@ -1,0 +1,19 @@
+language: python
+os: linux
+python: 3.7
+env:
+  - TOX_ENV=py37
+  - TOX_ENV=docs
+install:
+  - pip install tox
+script:
+  - tox -e $TOX_ENV
+
+jobs:
+  include:
+    - stage: build docker image
+      script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker build -t kbsbot_training_tool . -f docker/Dockerfile
+        - docker tag kbsbot_training_tool $DOCKER_USERNAME/kbsbot_training_tool
+        - docker push $DOCKER_USERNAME/kbsbot_training_tool

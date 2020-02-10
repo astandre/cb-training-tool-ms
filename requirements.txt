@@ -1,0 +1,6 @@
+-e git+https://github.com/Runnerly/flakon.git#egg=flakon
+pymongo
+flask
+rdflib
+flask_sqlalchemy
+rdflib-jsonld
