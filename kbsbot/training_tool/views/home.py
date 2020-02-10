@@ -26,6 +26,7 @@ def all_threads():
     logger.info(">>>>> Incoming data  %s", data)
     if "agent" in data:
         result = get_interactions(data["agent"])
+        # TODO get 10 sentences
         output = {
             "agent": data["agent"],
             "interactions": result
