@@ -167,9 +167,11 @@ def new_classified_sentence(agent_name, intent, sentence, mongo_id=None):
     if selected_intent is None:
         intent = make_uri(intent)
         selected_intent = Intent(name=intent, agent=agent, proposed=True)
-    if mongo_id is not None:
-        db.session.add(Sentence(intent=selected_intent, sentence=sentence))
-    else:
-        db.session.add(Sentence(intent=selected_intent, sentence=sentence, mongo_id=mongo_id))
-    db.session.commit()
+    current_sent = Sentence.query.filter_by(intent=selected_intent, sentence=sentence).first()
+    if current_sent is None:
+        if mongo_id is not None:
+            db.session.add(Sentence(intent=selected_intent, sentence=sentence))
+        else:
+            db.session.add(Sentence(intent=selected_intent, sentence=sentence, mongo_id=mongo_id))
+        db.session.commit()
     return sentence, intent

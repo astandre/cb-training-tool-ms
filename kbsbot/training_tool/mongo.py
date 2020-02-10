@@ -21,7 +21,7 @@ def update_entry(entry_id):
     """
 
     # "context": {"classified": False}
-    updated_entry = interactions.find({'_id': ObjectId(entry_id)})
+    updated_entry = interactions.find_one({'_id': ObjectId(entry_id)})
     print(updated_entry["output"]["context"])
     aux_output = updated_entry["output"]
     output = aux_output["context"]["classified"] = True
