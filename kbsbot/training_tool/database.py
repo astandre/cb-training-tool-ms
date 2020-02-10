@@ -156,6 +156,8 @@ def new_classified_sentence(agent_name, intent, sentence, mongo_id=None):
 
         :param sentence: A new sentence.
 
+        :param mongo_id: Id of the interaction.
+
       Return:
         The sentence if added.
     """

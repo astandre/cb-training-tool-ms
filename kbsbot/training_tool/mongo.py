@@ -35,10 +35,12 @@ def update_entry(entry_id):
 
 
 def get_interactions(agent):
-    result = interactions.find({"agent": agent, "context": {"classified": False}})
+    result = interactions.find({"agent": agent, "output.context.classified": False})
+    # result = interactions.find({"agent": agent})
     final_res = []
     for res in result:
         # print(res)
+        # if res["output"]["context"]["classified"] is False:
         aux_res = {
             "id": str(res["_id"]),
             "agent": res["agent"],
