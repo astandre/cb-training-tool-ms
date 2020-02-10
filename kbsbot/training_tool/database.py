@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-import os
+from kbsbot.training_tool.utils import make_uri
 
 db = SQLAlchemy()
 
@@ -63,7 +63,8 @@ class Keyword(db.Model):
 class Intent(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True)
-    description = db.Column(db.String(140), nullable=False)
+    proposed = db.Column(db.Boolean, default=False)
+    description = db.Column(db.String(140), nullable=False, default="This intent mus be trained")
     # Relationships one to one for answer
     answer_id = db.Column(db.Integer, db.ForeignKey('answer.id'))
     answer = db.relationship('Answer', backref='intent')
@@ -163,9 +164,12 @@ def new_classified_sentence(agent_name, intent, sentence, mongo_id=None):
     """
     agent = Agent.query.filter_by(name=agent_name).first()
     selected_intent = Intent.query.filter_by(agent=agent, name=intent).first()
+    if selected_intent is None:
+        intent = make_uri(intent)
+        selected_intent = Intent(name=intent, agent=agent, proposed=True)
     if mongo_id is not None:
         db.session.add(Sentence(intent=selected_intent, sentence=sentence))
     else:
         db.session.add(Sentence(intent=selected_intent, sentence=sentence, mongo_id=mongo_id))
     db.session.commit()
-    return sentence
+    return sentence, intent

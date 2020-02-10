@@ -60,11 +60,12 @@ def new_sentence():
     logger.info(">>>>> Incoming data  %s", data)
     if "agent" in data and "sentence" in data and "intent" in data:
         if "mongo_id" in data:
-            sentence = new_classified_sentence(data["agent"], data["intent"], data["sentence"], data["mongo_id"])
+            sentence, intent = new_classified_sentence(data["agent"], data["intent"], data["sentence"],
+                                                       data["mongo_id"])
             update_entry(data["mongo_id"])
         else:
-            sentence = new_classified_sentence(data["agent"], data["intent"], data["sentence"])
-        output = {"sentence": sentence}
+            sentence, intent = new_classified_sentence(data["agent"], data["intent"], data["sentence"])
+        output = {"sentence": sentence, "intent": intent}
     else:
         output = {"message": "Not valid data."}
     logger.info("<<<<< Output  %s", output)
@@ -79,7 +80,8 @@ def get_intents_agent():
         agent = get_agent(data["agent"])
         intents = []
         for intent in agent.intents:
-            intents.append(intent.name)
+            if intent.proposed is False:
+                intents.append(intent.name)
         output = {"agent": agent.name, "intents": intents}
     else:
         output = {"message": "Not valid data."}
