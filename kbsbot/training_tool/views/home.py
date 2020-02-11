@@ -22,18 +22,21 @@ def all_threads():
         @param: agent: This view requires an agent name.
 
     """
-    data = request.get_json()
-    logger.info(">>>>> Incoming data  %s", data)
-    if "agent" in data:
-        result = get_interactions(data["agent"])
-        # TODO get 10 sentences
-        output = {
-            "agent": data["agent"],
-            "interactions": result
-        }
-
+    logger.info(">>>>> Incoming data  %s", request.args)
+    if "agent" in request.args:
+        agent = request.args.get('agent')
+        agent = Agent.query.filter_by(name=agent).first()
+        if agent is not None:
+            result = get_interactions(agent.name)
+            # TODO get 10 sentences
+            output = {
+                "agent": agent.name,
+                "interactions": result
+            }
+        else:
+            output = {"message": "Must provide a valid agent name"}
     else:
-        output = {"message": "Must provide a valid user id"}
+        output = {"message": "Must provide a valid agent name"}
 
     logger.info("<<<<< Output  %s", output)
     return output
