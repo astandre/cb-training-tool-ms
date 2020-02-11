@@ -74,15 +74,37 @@ def new_sentence():
 
 @train.route('/kg/intents', methods=["GET"])
 def get_intents_agent():
-    data = request.get_json()
-    logger.info(">>>>> Incoming data  %s", data)
-    if "agent" in data:
-        agent = get_agent(data["agent"])
-        intents = []
-        for intent in agent.intents:
-            if intent.proposed is False:
-                intents.append(intent.name)
-        output = {"agent": agent.name, "intents": intents}
+    logger.info(">>>>> Incoming data  %s", request.args)
+    if "agent" in request.args:
+        agent = request.args.get('agent')
+        agent = Agent.query.filter_by(name=agent).first()
+        if agent is not None:
+            intents = []
+            for intent in agent.intents:
+                if intent.proposed is False:
+                    intents.append({"name": intent.name, "description": intent.description})
+            output = {"agent": agent.name, "intents": intents}
+        else:
+            output = {"message": "Not valid data."}
+    else:
+        output = {"message": "Not valid data."}
+    logger.info("<<<<< Output  %s", output)
+    return output
+
+
+@train.route('/kg/sentences', methods=["GET"])
+def get_sentence_intent():
+    logger.info(">>>>> Incoming data  %s", request.args)
+    if "intent" in request.args:
+        intent = request.args.get('intent')
+        intent = Intent.query.filter_by(name=intent).first()
+        if intent is not None:
+            sentences = []
+            for sentence in intent.sentences:
+                sentences.append(sentence.sentence)
+            output = {"intent": intent.name, "sentences": sentences}
+        else:
+            output = {"message": "Not valid data."}
     else:
         output = {"message": "Not valid data."}
     logger.info("<<<<< Output  %s", output)

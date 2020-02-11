@@ -128,22 +128,7 @@ class Resolution(db.Model):
     resolves = db.Column(db.String(300), nullable=False)
 
     def __str__(self):
-        return f"<Answer {RESOURCE_BASE_URI}{self.uri}>"
-
-
-def get_agent(agent_name):
-    """
-    This methods finds the agent object by filtering by its name
-
-     Parameters:
-        :param agent_name: The name of the agent.
-
-      Return:
-        The agent object object if found.
-    """
-    current_agent = Agent.query.filter_by(name=agent_name).first()
-    if current_agent is not None:
-        return current_agent
+        return f"<Resolution {RESOURCE_BASE_URI}{self.uri}>"
 
 
 def new_classified_sentence(agent_name, intent, sentence, mongo_id=None):

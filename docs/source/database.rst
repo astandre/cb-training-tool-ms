@@ -20,8 +20,6 @@ Here we have the different views of the app.
 
 .. autoclass:: database.Resolution
 
-.. autofunction:: database.get_agent
-
 .. autofunction:: database.new_classified_sentence
 
 
