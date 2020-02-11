@@ -12,5 +12,5 @@ def create_app(settings=None):
         settings = _SETTINGS
 
     app = _create_app(blueprints=blueprints, settings=settings)
-    app = CORS(app)
+    CORS(app)
     return app
