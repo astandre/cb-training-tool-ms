@@ -4,3 +4,4 @@ flask
 rdflib
 flask_sqlalchemy
 rdflib-jsonld
+flask_cors
