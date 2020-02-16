@@ -30,7 +30,6 @@ def all_threads():
             result = get_interactions(agent.name)
             # TODO get 10 sentences
             output = {
-                "agent": agent.name,
                 "interactions": result
             }
         else:
@@ -85,7 +84,9 @@ def get_intents_agent():
             intents = []
             for intent in agent.intents:
                 if intent.proposed is False:
-                    intents.append({"name": intent.name, "description": intent.description})
+                    intents.append(
+                        {"name": intent.name, "description": intent.description,
+                         "proposed": intent.proposed})
             output = {"agent": agent.name, "intents": intents}
         else:
             output = {"message": "Not valid data."}

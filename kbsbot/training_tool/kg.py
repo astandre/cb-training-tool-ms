@@ -10,9 +10,10 @@ ockb = Namespace("http://127.0.0.1/kbsbot/ontology/")
 
 def build_intents_kg(agent):
     """
+    This method builds the kg for the chatbot, in order to be mixed with the curren kg of the agent.
 
-    :param agent:
-    :return:
+    :param agent: an agent name.
+    :return: The kg in json-ld format
     """
     g = Graph()
 
