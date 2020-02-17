@@ -13,6 +13,11 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 
+@train.route('/status', methods=["GET"])
+def get_status():
+    return {"message": "ok"}
+
+
 @train.route('/interactions/all', methods=["GET"])
 def all_threads():
     """
