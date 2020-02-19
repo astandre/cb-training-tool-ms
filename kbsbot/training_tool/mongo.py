@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from pymongo import DESCENDING
 from bson.objectid import ObjectId
 import os
 
@@ -36,7 +37,8 @@ def get_interactions(agent):
 
     :return: a list of all interactions
     """
-    result = interactions.find({"agent": agent, "output.context.classified": False})
+    result = interactions.find({"agent": agent, "output.context.classified": False},
+                               sort=[('date', DESCENDING)])
     final_res = []
     for res in result:
         aux_res = {
